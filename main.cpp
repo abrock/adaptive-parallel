@@ -190,8 +190,11 @@ int main(int argc, char ** argv) {
             max_load = .5;
         }
 
+        max_cpu_usage = std::min(100.0, std::max(1.0, max_cpu_arg.getValue()));
+
         std::cout << "Parameters: " << std::endl
-                  << "max. load: " << max_load << std::endl;
+                  << "max. load:      " << max_load << std::endl
+                  << "max. cpu usage: " << max_cpu_usage << std::endl;
     }
     catch (TCLAP::ArgException const & e) {
         std::cerr << e.what() << std::endl;
