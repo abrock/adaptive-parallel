@@ -66,7 +66,7 @@ int main(int argc, char ** argv) {
     std::vector<std::thread *> threads;
 
     std::string cmd;
-    if (!(std::cin >> cmd)) {
+    if (!(std::getline(std::cin, cmd))) {
         exit(EXIT_SUCCESS);
     }
 
@@ -79,19 +79,29 @@ int main(int argc, char ** argv) {
             std::cerr << "Warning: getloadavg failed." << std::endl;
         }
         if (load > max_load) {
+            std::cout << "Load is " << load << " which is above the threshold of " << max_load << "." << std::endl;
             start_next = false;
+        }
+        else {
+            std::cout << "Load is " << load << " which is below the threshold of " << max_load << "." << std::endl;
         }
 
         if (start_next) {
-            std::cout << "Load is " << load << " which is below the threshold of " << max_load << ", starting command:" << std::endl
+            std::cout << "starting command:" << std::endl
                       << cmd << std::endl;
             std::thread * t = new std::thread(system, cmd.c_str());
             threads.push_back(t);
-            if (!(std::cin >> cmd)) {
+            if (!(std::getline(std::cin, cmd))) {
                 break;
             }
+            sleep(30);
+        }
+        else {
+            std::cout << "not starting command:" << std::endl
+                      << cmd << std::endl;
         }
 
+        std::cout << std::endl;
 
         sleep(10);
     }
